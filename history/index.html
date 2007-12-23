@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<!--
+	RegexPal 0.1.4
+	(c) 2007 Steven Levithan <http://stevenlevithan.com>
+	GNU LGPL 3.0 license
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Version History &ndash; RegexPal</title>
+	<link rel="stylesheet" type="text/css" href="../assets/regexpal.css"/>
+</head>
+<body>
+	<div id="header">
+		<img src="../assets/regexpal.gif" alt="RegexPal"/>
+		<h1><a href="../"><span class="t1">Regex</span><span class="t2">Pal</span>
+			<span id="version">0.1.4</span>
+			<span id="subtitle">&mdash; a JavaScript regular expression tester</span></a>
+		</h1>
+		<ul id="nav">
+			<li><a href="http://blog.stevenlevithan.com/archives/regexpal">Help</a></li>
+			<li><a href="./" class="here">Version History</a></li>
+			<li><a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#116;&#101;&#118;&#101;&#115;&#095;&#108;&#105;&#115;&#116;&#064;&#104;&#111;&#116;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">Feedback</a></li>
+			<li><a href="http://blog.stevenlevithan.com/">Blog</a></li>
+		</ul>
+	</div>
+
+	<div id="body">
+		<h2>Version 0.1.4 &mdash; 2007-12-22</h2>
+		<ul>
+			<li><strong>License:</strong> RegexPal is now released under the <a rel="license" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>. There is also a <a href="http://code.google.com/p/regexpal/">Google Code project</a> where you are welcome to participate.</li>
+			<li><strong>Enhancement:</strong> Trailing range-hyphens in unclosed character classes are no longer highlighted as errors.</li>
+			<li><strong>Fix:</strong> A leading, literal newline in the regex field no longer causes syntax highlighting to be misaligned (IE only).</li>
+		</ul>
+
+		<h2>Version 0.1.3 &mdash; 2007-11-10</h2>
+		<ul>
+			<li><strong>License:</strong> RegexPal is now <a href="http://blog.stevenlevithan.com/archives/regexpal-now-open-source">released</a> under the Creative Commons Attribution&ndash;Share Alike License.</li>
+		</ul>
+
+		<h2>Version 0.1.2 &mdash; 2007-10-18</h2>
+		<ul>
+			<li><strong>Enhancement:</strong> A new link at the bottom of the page allows you to easily generate a permalink which loads the current regex, input, and flags.</li>
+			<li><strong>Fix:</strong> Corrected an issue which caused some valid interval quantifiers such as <code>{20,100}</code> to be highlighted as errors (v0.1.1 only).</li>
+		</ul>
+
+		<h2>Version 0.1.1 &mdash; 2007-08-30</h2>
+		<ul>
+			<li><strong>New feature:</strong> The regex, test data, and flags used when the page first loads can now be specified in the query string. Examples:
+				<ul>
+					<li><a href="../?flags=&amp;regex=%5Cb%5B0-9%5D%7B5%7D(%3F%3A-%5B0-9%5D%7B4%7D)%3F%5Cb&amp;input=20859%2098052-6399%20100000">Zip codes</a></li>
+					<li><a href="../?flags=i&amp;regex=%3C%2F%3F%5Ba-z%5D%5B%5E%3E%5D*%3E&amp;input=%3Cem%20class%3D%22alert%22%3Etest%3C%2Fem%3E">HTML tags, case insenstive</a></li>
+					<li><a href="../?flags=i&amp;regex=%3Ctable%5Cb%5B%5E%3E%5D*%3E(%3F%3A(%3F%3D(%5B%5E%3C%5D%2B))%5C1%7C%3C(%3F!table%5Cb%5B%5E%3E%5D*%3E))*%3F%3C%2Ftable%3E&amp;input=%3Ctable%3E%3Ctr%3E%3Ctd%3EThis%20regex%20matches%20innermost%20tables%20only.%0ASee%20http%3A%2F%2Fblog.stevenlevithan.com%2Farchives%2Fmatch-innermost-html-element%3C%2Ftd%3E%3C%2Ftr%3E%3C%2Ftable%3E%0A%3Ctable%3E%0A%3Ctbody%3E%0A%09%3Ctr%3E%0A%09%09%3Ctd%3E%3Ctable%3ETest%3C%2Ftable%3E%3C%2Ftd%3E%0A%09%09%3Ctd%3E%0A%09%09%09%3Ctable%3E%0A%09%09%09%09%3Ctd%3E%0A%09%09%09%09%09%3Ctable%20border%3D%221%22%3E%3Ctr%3E%3Ctd%3E%0A%09%09%09%09%09%09Innermost%20table%20%233%3C%2Ftd%3E%3C%2Ftr%3E%0A%09%09%09%09%09%3C%2Ftable%3E%3C%2Ftd%3E%0A%09%09%09%3C%2Ftable%3E%0A%09%09%3C%2Ftd%3E%0A%09%3C%2Ftr%3E%0A%3C%2Ftbody%3E%0A%3C%2Ftable%3E">Innermost tables in HTML source code</a></li>
+				</ul>
+			</li>
+			<li><strong>Fix:</strong> Interval quantifiers in reverse numeric order such as <code>{3,1}</code> are now highlighted as errors.</li>
+			<li><strong>Fix:</strong> Interval quantifiers with values greater than 65,535 such as <code>{0,65536}</code> are now highlighted as errors to mimic Firefox's handling.</li>
+		</ul>
+		<h2>Version 0.1 &mdash; 2007-08-05</h2>
+		<ul>
+			<li>First release.</li>
+		</ul>
+	</div>
+
+	<div id="footer" class="small">
+		<p id="copyright">&copy; 2007 <a href="http://blog.stevenlevithan.com/">StevenLevithan.com</a></p>
+	</div>
+
+	<!-- Stats by Mint <http://haveamint.com> -->
+	<script src="/mint/?js"></script>
+</body>
+</html>
