@@ -134,10 +134,10 @@ var parseRegex = function () {
 	// Cache through closure...
 	//------------------------------------------------------->
 	var	re = {
-			regexToken:          /\[\^?]?(?:[^\\\]]+|\\[\S\s]?)*]?|\\(?:0(?:[0-3][0-7]{0,2}|[4-7][0-7]?)?|[1-9]\d*|x[\dA-Fa-f]{2}|u[\dA-Fa-f]{4}|c[A-Z]|[\S\s]?)|\((?:\?[:=!]?)?|(?:[?*+]|\{\d+(?:,\d*)?\})\??|[^.?*+^${[()|\\]+|./g,
+			regexToken:          /\[\^?]?(?:[^\\\]]+|\\[\S\s]?)*]?|\\(?:0(?:[0-3][0-7]{0,2}|[4-7][0-7]?)?|[1-9][0-9]*|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|c[A-Za-z]|[\S\s]?)|\((?:\?[:=!]?)?|(?:[?*+]|\{[0-9]+(?:,[0-9]*)?\})\??|[^.?*+^${[()|\\]+|./g,
 			characterClassParts: /^(<opening>\[\^?)(<contents>]?(?:[^\\\]]+|\\[\S\s]?)*)(<closing>]?)$/.addFlags("k"),
-			characterClassToken: /[^\\-]+|-|\\(?:[0-3][0-7]{0,2}|[4-7][0-7]?|x[\dA-Fa-f]{2}|u[\dA-Fa-f]{4}|c[A-Z]|[\S\s]?)/g,
-			quantifier:          /^(?:[?*+]|\{\d+(?:,\d*)?\})\??$/
+			characterClassToken: /[^\\-]+|-|\\(?:[0-3][0-7]{0,2}|[4-7][0-7]?|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|c[A-Za-z]|[\S\s]?)/g,
+			quantifier:          /^(?:[?*+]|\{[0-9]+(?:,[0-9]*)?\})\??$/
 		},
 		type = {
 			NONE:         0,
@@ -156,13 +156,13 @@ var parseRegex = function () {
 
 		// Escape sequence
 		if (token.length > 1 && token.charAt(0) === "\\") {
-			var t = token.substring(1);
+			var t = token.slice(1);
 			// Control character
-			if (XRegExp.cache("^c[A-Z]$").test(t)) {
-				return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(t.charAt(1)) + 1;
+			if (XRegExp.cache("^c[A-Za-z]$").test(t)) {
+				return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(t.charAt(1).toUpperCase()) + 1;
 			// Two or four digit hexadecimal character code
 			} else if (XRegExp.cache("^(?:x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4})$").test(t)) {
-				return parseInt(t.substring(1), 16);
+				return parseInt(t.slice(1), 16);
 			// One to three digit octal character code up to 377 (hex FF)
 			} else if (XRegExp.cache("^(?:[0-3][0-7]{0,2}|[4-7][0-7]?)$").test(t)) {
 				return parseInt(t, 8);
@@ -197,7 +197,7 @@ var parseRegex = function () {
 			parser    = re.characterClassToken,
 			lastToken = {
 				rangeable: false,
-				type:      type.NONE
+				type: type.NONE
 			},
 			match, m;
 
@@ -210,7 +210,7 @@ var parseRegex = function () {
 			if (m.charAt(0) === "\\") {
 				/* Inside character classes, browsers differ on how they handle the following:
 				 - Any representation of character index zero (\0, \00, \000, \x00, \u0000)
-				 - "\c", when not followed by A-Z
+				 - "\c", when not followed by A-Z or a-z
 				 - "\x", when not followed by two hex characters
 				 - "\u", when not followed by four hex characters
 				However, although representations of character index zero within character classes don't work on their
@@ -228,7 +228,7 @@ var parseRegex = function () {
 					handle this inconsistently. E.g., Firefox 2 throws an invalid range error for [z-\d] and [\d--]. */
 					lastToken = {
 						rangeable: lastToken.type !== type.RANGE_HYPHEN,
-						type:      type.METACLASS
+						type: type.METACLASS
 					};
 				// Unescaped "\" at the end of the regex
 				} else if (m === "\\") {
@@ -238,7 +238,7 @@ var parseRegex = function () {
 					output += "<b>" + m.replace(XRegExp.cache("[<&>]"), "_") + "</b>";
 					lastToken = {
 						rangeable: lastToken.type !== type.RANGE_HYPHEN,
-						charCode:  getTokenCharCode(m)
+						charCode: getTokenCharCode(m)
 					};
 				}
 			// Hyphen (might indicate a range)
@@ -263,7 +263,7 @@ var parseRegex = function () {
 						}
 						lastToken = {
 							rangeable: false,
-							type:      type.RANGE_HYPHEN
+							type: type.RANGE_HYPHEN
 						};
 					} else {
 						// Hyphen at the end of a properly closed character class (literal character)
@@ -307,7 +307,7 @@ var parseRegex = function () {
 			openGroups          = [],
 			lastToken = {
 				quantifiable: false,
-				type:         type.NONE
+				type: type.NONE
 			},
 			match, m;
 
@@ -381,7 +381,7 @@ var parseRegex = function () {
 						and RegexPal does not implement its own regex engine, it needs to highlight the regex as the
 						browsers interpret them. */
 						var	nonBackrefDigits = "",
-							num = +m.substring(1);
+							num = +m.slice(1);
 						while (num > capturingGroupCount) {
 							nonBackrefDigits = XRegExp.cache("[0-9]$").exec(num)[0] + nonBackrefDigits;
 							num = Math.floor(num / 10); // Drop the last digit
@@ -395,7 +395,7 @@ var parseRegex = function () {
 					// Metasequence
 					} else if (XRegExp.cache("^[0bBcdDfnrsStuvwWx]").test(m.charAt(1))) {
 						/* Browsers differ on how they handle:
-						 - "\c", when not followed by A-Z
+						 - "\c", when not followed by A-Z or a-z
 						 - "\x", when not followed by two hex characters
 						 - "\u", when not followed by four hex characters
 						Hence, such metasequences are flagged as errors. */
@@ -457,7 +457,7 @@ var parseRegex = function () {
 						}
 						lastToken = {
 							quantifiable: false,
-							type:         type.ALTERNATOR
+							type: type.ALTERNATOR
 						};
 					// ^ or $ anchor
 					} else if ("^$".indexOf(m) > -1) {
@@ -481,9 +481,9 @@ var parseRegex = function () {
 		for (var i = 0; i < openGroups.length; i++) {
 			var errorIndex = openGroups[i].index + numCharsAdded;
 			output = (
-				output.substring(0, errorIndex) +
+				output.slice(0, errorIndex) +
 				errorStr(openGroups[i].opening) +
-				output.substring(errorIndex + openGroups[i].opening.length)
+				output.slice(errorIndex + openGroups[i].opening.length)
 			);
 			numCharsAdded += errorStr("").length;
 		}
