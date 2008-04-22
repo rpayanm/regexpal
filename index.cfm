@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <!--
-	RegexPal 0.1.4
-	(c) 2007 Steven Levithan <http://stevenlevithan.com>
+	RegexPal 0.1.4c
+	(c) 2007-2008 Steven Levithan <stevenlevithan.com>
 	GNU LGPL 3.0 license
 -->
 
@@ -17,30 +17,30 @@
 		</cfif>
 	</cfif>
 
-	<cfparam name="URL.flags" default="" />
-	<cfparam name="Variables.regex" default="Enter regex here." />
-	<cfparam name="Variables.input" default="Enter test data here." />
+	<cfparam name="URL.flags"             default="" />
+	<cfparam name="Variables.regex"       default="Enter regex here." />
+	<cfparam name="Variables.input"       default="Enter test data here." />
 	<cfparam name="Variables.isPermaLink" default="FALSE" />
 </cfsilent>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>JavaScript Regex Tester &ndash; RegexPal<cfif Variables.isPermaLink> (Permalink)</cfif></title>
-	<link rel="stylesheet" type="text/css" href="assets/regexpal.css"/>
+	<title>Regex Tester &ndash; RegexPal<cfif Variables.isPermaLink> (Permalink)</cfif></title>
+	<link href="./assets/regexpal.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 	<div id="header">
-		<img src="assets/regexpal.gif" alt="RegexPal"/>
+		<img src="./assets/regexpal.gif" alt="RegexPal"/>
 		<h1><a href="./"><span class="t1">Regex</span><span class="t2">Pal</span>
 			<span id="version">0.1.4</span>
 			<span id="subtitle">&mdash; a JavaScript regular expression tester</span></a>
 		</h1>
 		<ul id="nav">
 			<li><a href="http://blog.stevenlevithan.com/archives/regexpal">Help</a></li>
-			<li><a href="history/">Version History</a></li>
-			<li><a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#116;&#101;&#118;&#101;&#115;&#095;&#108;&#105;&#115;&#116;&#064;&#104;&#111;&#116;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">Feedback</a></li>
-			<li><a href="http://blog.stevenlevithan.com/">Blog</a></li>
+			<li><a href="./history/">Version History</a></li>
+			<li><a href="mailto:steves_list&#064;hotmail.com">Feedback</a></li>
+			<li><a href="http://blog.stevenlevithan.com">Blog</a></li>
 		</ul>
 	</div>
 
@@ -49,7 +49,7 @@
 			<li class="hidden"><input id="flagG" type="checkbox" checked="checked"/><label for="flagG">Global</label> <span class="flag">(g)</span></li>
 			<li><input id="flagI" type="checkbox" <cfif find("i", URL.flags)>checked="checked"</cfif>/><label for="flagI">Case insensitive</label> <span class="flag">(i)</span></li>
 			<li><input id="flagM" type="checkbox" <cfif find("m", URL.flags)>checked="checked"</cfif>/><label for="flagM">^$ match at line breaks</label> <span class="flag">(m)</span></li>
-			<li><input id="flagS" type="checkbox" <cfif find("s", URL.flags)>checked="checked"</cfif>/><label for="flagS">Dot matches newline</label> <span class="flag">(s<span class="plain">; via <a href="http://blog.stevenlevithan.com/archives/xregexp-named-capture">XRegExp</a></span>)</span></li>
+			<li><input id="flagS" type="checkbox" <cfif find("s", URL.flags)>checked="checked"</cfif>/><label for="flagS">Dot matches all</label> <span class="flag">(s<span class="plain">; via <a href="http://stevenlevithan.com/regex/xregexp/">XRegExp</a></span>)</span></li>
 			<li class="optGroup" id="quickReferenceDropdown">Quick Reference</li>
 			<li class="optGroup" id="optionsDropdown">Options
 				<ul>
@@ -62,9 +62,9 @@
 	</div>
 
 	<div id="quickReference" class="hidden">
-		<h2>JavaScript Regex Cheatsheet</h2>
-		<img class="pin" src="assets/pin.gif" alt="pin" title="pin"/>
-		<img class="close" src="assets/close.gif" alt="close" title="close"/>
+		<h2>JavaScript Regex Quick Reference</h2>
+		<img class="pin" src="./assets/pin.gif" alt="pin" title="pin"/>
+		<img class="close" src="./assets/close.gif" alt="close" title="close"/>
 		<table cellspacing="0" summary="Regular expressions reference">
 			<tbody>
 				<tr>
@@ -166,13 +166,18 @@
 	</div>
 
 	<div id="footer" class="small">
-		<p><strong>Need more power?</strong> Get <a href="http://www.regexbuddy.com/cgi-bin/affref.pl?aff=SteveL">RegexBuddy</a> from <abbr title="Just Great Software">JGsoft</abbr>, a powerful regex tester &amp; builder which inspired many of this application's features.</p>
-		<p id="copyright"><a href="javascript:regexPal.permalink();" id="permalink">Permalink</a> &mdash; &copy; 2007 <a href="http://blog.stevenlevithan.com/">StevenLevithan.com</a>. Design by <a href="http://ryanschristie.com/">Ryan Christie</a> and Steven Levithan.</p>
+		<p><strong>Need more power?</strong> Get <a href="http://www.regexbuddy.com/cgi-bin/affref.pl?aff=SteveL">RegexBuddy</a> from <abbr title="Just Great Software">JGsoft</abbr>, a powerful regex tester &amp; builder that inspired many of this application's features.</p>
+		<p id="copyright"><a href="javascript:RegexPal.permalink();" id="permalink">Permalink</a> &mdash; &copy; 2008 <a href="http://blog.stevenlevithan.com">Steven Levithan</a> &mdash; <a href="http://code.google.com/p/regexpal/">Google Code</a></p>
 	</div>
 
-	<script src="assets/build-0.1.4.js"></script>
+	<script src="./assets/build-0.1.4.js"></script>
+	<!-- Build file includes:
+	<script src="./assets/xregexp.js"></script>
+	<script src="./assets/helpers.js"></script>
+	<script src="./assets/regexpal.js"></script>
+	-->
 
-	<!-- Stats by Mint <http://haveamint.com> -->
+	<!-- Stats by Mint <haveamint.com> -->
 	<script src="/mint/?js"></script>
 </body>
 </html>

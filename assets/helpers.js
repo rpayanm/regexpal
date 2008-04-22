@@ -1,10 +1,8 @@
-
 /*
 	Helper functions for RegexPal
 	(c) 2007 Steven Levithan <http://stevenlevithan.com>
 	MIT license
 */
-
 
 function $ (el) {
 	if (el.nodeName) return el;
@@ -141,4 +139,3 @@ var	isWebKit = navigator.userAgent.indexOf("WebKit") > -1,
 	isIE6 /*@cc_on = @_jscript_version < 5.7 @*/; // Despite the variable name, this means if IE lower than v7
 
 // RegexPal also needs an Array.prototype.indexOf method, but it's provided by XRegExp
-

@@ -7,10 +7,10 @@
 
 
 //---------------------------------------------------------------------+
-// The regexPal namespace
+// The RegexPal namespace
 //---------------------------------------------------------------------+
 
-var regexPal = {
+var RegexPal = {
 	/* Store DOM node references for quick lookup */
 	fields: {
 		search: new SmartField("search"),
@@ -29,9 +29,9 @@ var regexPal = {
 	}
 };
 
-extend(regexPal, function () {
+extend(RegexPal, function () {
 	// Make property shortcuts available to all methods of the returned object through closure...
-	var	f = regexPal.fields,
+	var	f = RegexPal.fields,
 		o = f.options;
 
 	return {
@@ -508,7 +508,7 @@ with more limited capabilities. */
 
 function SmartField (el) {
 	el = $(el);
-	/* The <textarea> element already exists for progressive-enhancement reasons.
+	/* The <textarea> element already exists for graceful-degradation reasons.
 	Not that RegexPal would work at all without JavaScript, but whatever. */
 	var	textboxEl = el.getElementsByTagName("textarea")[0],
 		bgEl      = document.createElement("pre");
@@ -572,9 +572,9 @@ extend(SmartField.prototype, {
 		if (!this._filterKeys(e)) return false;
 		var srcEl = e.srcElement || e.target;
 		switch (srcEl) {
-			case regexPal.fields.search.textbox:
+			case RegexPal.fields.search.textbox:
 				// Since the textbox's value doesn't change until the keydown event finishes, run the match after 0ms
-				setTimeout(function () {regexPal.highlightSearchSyntax.call(regexPal);}, 0);
+				setTimeout(function () {RegexPal.highlightSearchSyntax.call(RegexPal);}, 0);
 				break;
 			// There might be other elements to handle in the future (e.g., replacement)
 		}
@@ -594,9 +594,9 @@ extend(SmartField.prototype, {
 		if (this._matchOnKeyUp) {
 			this._matchOnKeyUp = false; // Reset
 			switch (srcEl) {
-				case regexPal.fields.search.textbox: // fallthru
-				case regexPal.fields.input.textbox:
-					regexPal.highlightMatches();
+				case RegexPal.fields.search.textbox: // fallthru
+				case RegexPal.fields.input.textbox:
+					RegexPal.highlightMatches();
 					break;
 				// There might be other elements to handle in the future
 			}
@@ -610,15 +610,15 @@ extend(SmartField.prototype, {
 		couple keydowns before removing the matches offers a balanace between reducing performance issues when
 		holding down keys, and keeping performance up for fast typists. */
 		if (this._keydownCount > 2) {
-			regexPal.fields.input.clearBg();
+			RegexPal.fields.input.clearBg();
 			this._matchOnKeyUp = true;
 		} else {
 			/* Since we're running this on keydown but the textbox's value doesn't change until code for the
 			event finishes, run the match after 0ms as a workaround. */
 			switch (srcEl) {
-				case regexPal.fields.search.textbox: // fallthru
-				case regexPal.fields.input.textbox:
-					setTimeout(function () {regexPal.highlightMatches.call(regexPal);}, 0);
+				case RegexPal.fields.search.textbox: // fallthru
+				case RegexPal.fields.input.textbox:
+					setTimeout(function () {RegexPal.highlightMatches.call(RegexPal);}, 0);
 					break;
 				// There might be other elements to handle in the future
 			}
@@ -626,24 +626,34 @@ extend(SmartField.prototype, {
 	},
 
 	_filterKeys: function (e) {
-		var srcEl = e.srcElement || e.target;
+		var	srcEl = e.srcElement || e.target,
+			f = RegexPal.fields;
 
 		// If the user pressed a key which does not change the input, return false to prevent running a match
-		if (this._deadKeys.indexOf(e.keyCode) > -1) return false;
+		if (this._deadKeys.indexOf(e.keyCode) > -1)
+			return false;
 
-		/* If the user pressed tab (keyCode 9) in the input textbox, override the default behavior of moving to the
-		next link or form input. Instead, insert a tab character overwriting any selected text. */
-		if ((e.keyCode === 9) && (srcEl === regexPal.fields.input.textbox) && !e.shiftKey) {
-			replaceSelection(srcEl, "\t");
-			if (e.preventDefault) {
-				e.preventDefault();
+		// If the user pressed tab (keyCode 9) in the search or input fields, override the default behavior
+		if ((e.keyCode === 9) && (srcEl === f.input.textbox || (srcEl === f.search.textbox && !e.shiftKey))) {
+			/* Moving focus between the search and input fields can't be reliably achieved in
+			Firefox using tabindex alone because of how the markup is structured */
+
+			if (srcEl === f.input.textbox) {
+				if (e.shiftKey) {
+					f.search.textbox.focus();
+				} else {
+					// Insert a tab character, overwriting any selected text
+					replaceSelection(srcEl, "\t");
+					// Opera's tabbing mechanism fires before keydown, so bring back the focus
+					if (window.opera)
+						setTimeout(function () {srcEl.focus();}, 0);
+				}
 			} else {
-				e.returnValue = false;
+				f.input.textbox.focus();
 			}
-			// Opera's tabbing mechanism fires before keydown
-			if (window.opera) {
-				setTimeout(function () {srcEl.focus();}, 0); // Bring back the focus
-			}
+
+			if (e.preventDefault) e.preventDefault();
+			else e.returnValue = false;
 		}
 
 		return true;
@@ -672,7 +682,7 @@ These could be included, but Opera handles them incorrectly:
 //---------------------------------------------------------------------+
 
 (function () {
-	var	f = regexPal.fields,
+	var	f = RegexPal.fields,
 		o = f.options;
 
 	onresize = function (e) {
@@ -682,19 +692,32 @@ These could be included, but Opera handles them incorrectly:
 		f.input.setDimensions();
 	};
 	onresize(); // Immediately resize to viewport height
-	f.search.textbox.focus();
 
 	// Run a match and syntax highlighting with whatever data exists onload
-	regexPal.highlightSearchSyntax();
-	regexPal.highlightMatches();
+	RegexPal.highlightSearchSyntax();
+	RegexPal.highlightMatches();
 
 	for (var flag in o.flags) {
-		o.flags[flag].onclick = regexPal.highlightMatches;
+		o.flags[flag].onclick = RegexPal.highlightMatches;
 	}
 
-	o.highlightSyntax.onclick  = regexPal.highlightSearchSyntax;
-	o.highlightMatches.onclick = regexPal.highlightMatches;
-	o.invertMatches.onclick    = regexPal.highlightMatches;
+	o.highlightSyntax.onclick  = RegexPal.highlightSearchSyntax;
+	o.highlightMatches.onclick = RegexPal.highlightMatches;
+	o.invertMatches.onclick    = RegexPal.highlightMatches;
+
+	function makeResetter (field) {
+		return function () {
+			field.clearBg();
+			field.textbox.value = "";
+			field.textbox.onfocus = null;
+		};
+	};
+	if (f.search.textbox.value === "Enter regex here.") {
+		f.search.textbox.onfocus = makeResetter(f.search);
+	}
+	if (f.input.textbox.value === "Enter test data here.") {
+		f.input.textbox.onfocus = makeResetter(f.input);
+	}
 
 	// The implementation for the options and quick reference behavior could be a lot more fancy, but whatever...
 
@@ -739,4 +762,3 @@ These could be included, but Opera handles them incorrectly:
 		};
 	}
 })();
-
