@@ -1,6 +1,5 @@
-
 /*
-	XRegExp 0.2.5 RC1
+	XRegExp 0.2.5
 	(c) 2007 Steven Levithan <http://stevenlevithan.com>
 	MIT license
 
@@ -123,7 +122,7 @@ RegExp.prototype.addFlags = function (flags) {
 	var regex = new XRegExp(this.source, flags);
 	// Preserve capture names if adding flags to a regex which has already had capture names attached
 	if (!regex._captureNames && this._captureNames)
-		regex._captureNames = this._captureNames.valueOf();
+		regex._captureNames = this._captureNames.slice(0);
 	return regex;
 };
 
@@ -238,4 +237,3 @@ if (!Array.prototype.indexOf) {
 		return -1;
 	};
 }
-

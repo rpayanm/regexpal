@@ -23,7 +23,7 @@ pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;/*line-height:99%;*/}
 /* Main styles -------------------------------------- */
 body    {min-width:810px;}
 h1, h2  {font-weight:bold; font-family:Georgia,serif;}
-h2      {margin-top:15px;}
+h2, p   {margin-top:15px;}
 h1      {font-size:130%;}
 h2      {font-size:110%;}
 abbr,
@@ -58,9 +58,10 @@ pre {
 #body        {padding:10px;}
 #body li     {list-style:circle; list-style-position:inside; margin-left:15px;}
 #footer      {width:100%; text-align:center;}
+#footer p    {margin:0;}
 #copyright   {padding:3px 30px 0; border-top:1px solid #ddd; color:#888; display:inline; position:relative; top:10px;}
 #copyright a {color:#888;}
-#permalink   {color:#00e !important; background:url("link.gif") left top no-repeat; padding-left:18px;}
+#permalink   {color:#00e !important; background:url("./link.gif") left top no-repeat; padding-left:18px; font-weight:bold;}
 
 #nav         {background:#666; float:right; height:32px;}
 #nav li      {float:left;}
@@ -93,12 +94,12 @@ pre {
 #quickReference             {position:absolute; right:5px; z-index:10; background:#fdf6ca; border:1px solid #ceb978; padding:10px;}
 #quickReference h2          {display:none;}
 #quickReference td          {font-size:80%; padding-right:5px;}
-#quickReference p           {font-size:80%; text-align:right;}
+#quickReference p           {font-size:80%; margin:0; text-align:right;}
 #quickReference p a         {color:#95784a;}
 #quickReference p a:hover   {background:#f2eab7;}
 #quickReference img         {position:absolute; top:8px; cursor:pointer;}
 #quickReference img.pin     {right:25px;}
-#quickReference img.close   {right:8px; background-image:url("pinned.gif"); /* Preload toggle image for img.pin */}
+#quickReference img.close   {right:8px; background-image:url("./pinned.gif"); /* Preload toggle image for img.pin */}
 #quickReference code        {font-size:110%;}
 table tr.altBg              {background:#f2eab7;}
 
@@ -117,7 +118,7 @@ b, i, u       {font-weight:normal; font-style:normal; text-decoration:none;}
 #search b     {background:#aad1f7; color:#aad1f7;}
 #search i     {background:#f9ca69; color:#f9ca69;}
 #search i b   {background:#f7a700; color:#f7a700;}
-#search i u   {background:#efba4a; color:#efba4a;} /* No RB equivalent */
+#search i u   {background:#efba4a; color:#efba4a;}
 #search b.g1  {background:#d2f854; color:#d2f854;}
 #search b.g2  {background:#9ec70c; color:#9ec70c;}
 #search b.g3  {background:#ecc9f7; color:#ecc9f7;}
